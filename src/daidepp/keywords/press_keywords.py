@@ -171,7 +171,7 @@ class DMZ(_DAIDEObject):
     def __str__(self):
         return (
             and_items(self.powers)
-            + "removing all units from, and not order to, support to, convoy to, retreat to, or build any units in "
+            + "removing all units from, and not ordering to, supporting to, convoying to, retreating to, or building any units in "
             + and_items(list(map(lambda x: str(x), self.provinces)))
         )
 
