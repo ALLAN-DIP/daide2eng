@@ -53,7 +53,7 @@ class PRP(_DAIDEObject):
     arrangement: Arrangement
 
     def __str__(self):
-        return f"I propose {self.arrangement} "
+        return f"I propose that {self.arrangement} "
 
 
 @dataclass
@@ -171,7 +171,7 @@ class DMZ(_DAIDEObject):
     def __str__(self):
         return (
             and_items(self.powers)
-            + "removing all units from, and not order to, support to, convoy to, retreat to, or build any units in"
+            + "removing all units from, and not order to, support to, convoy to, retreat to, or build any units in "
             + and_items(list(map(lambda x: str(x), self.provinces)))
         )
 
