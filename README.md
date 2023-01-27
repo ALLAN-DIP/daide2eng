@@ -15,3 +15,8 @@ PRP ( AND ( SLO ( ENG ) ) ( SLO ( GER ) ) ( SLO ( RUS ) ) ( SLO ( ENG ) ) ( SLO 
 # modified output:
 I propose ENG solo, GER solo, RUS solo, ENG solo, GER solo, and RUS solo  
 ```
+
+## Optional TODOS
+- [ ] Suffix periods to all messages (unless they (or questionmarks) are already there)
+- [ ] Non-rule-based translations/paraphrases
+- [ ] Complete translations for simple tokens (e.g. `ENG` -> `England`)
