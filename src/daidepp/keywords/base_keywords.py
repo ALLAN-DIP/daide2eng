@@ -5,6 +5,7 @@ from typing import List, Optional, Union
 
 from daidepp.constants import *
 from daidepp.keywords.daide_object import _DAIDEObject
+from daidepp.keywords.keyword_utils import and_items
 
 
 @dataclass
@@ -29,7 +30,7 @@ class Unit(_DAIDEObject):
     location: Location
 
     def __str__(self):
-        return f"{self.power} {self.unit_type} {self.location}"
+        return f"{self.power}'s {self.unit_type} in {self.location} "
 
 
 @dataclass
@@ -37,7 +38,7 @@ class HLD(_DAIDEObject):
     unit: Unit
 
     def __str__(self):
-        return f"( {self.unit} ) HLD"
+        return f"holding {self.unit} "
 
 
 @dataclass
@@ -46,7 +47,7 @@ class MTO(_DAIDEObject):
     location: Location
 
     def __str__(self):
-        return f"( {self.unit} ) MTO {self.location}"
+        return f"moving {self.unit} to {self.location} "
 
 
 @dataclass
@@ -57,9 +58,9 @@ class SUP:
 
     def __str__(self):
         if not self.province_no_coast:
-            return f"( {self.supporting_unit} ) SUP ( {self.supported_unit} )"
+            return f"using {self.supporting_unit} to support {self.supported_unit} "
         else:
-            return f"( {self.supporting_unit} ) SUP ( {self.supported_unit} ) MTO {self.province_no_coast}"
+            return f"using {self.supporting_unit} to support {self.supported_unit} moving into {self.province_no_coast} "
 
 
 @dataclass
@@ -69,7 +70,7 @@ class CVY:
     province: ProvinceNoCoast
 
     def __str__(self):
-        return f"( {self.convoying_unit} ) CVY ( {self.convoyed_unit} ) CTO {self.province}"
+        return f"using {self.convoying_unit} to convoy {self.convoyed_unit} into {self.province} "
 
 
 @dataclass
@@ -85,9 +86,8 @@ class MoveByCVY(_DAIDEObject):
 
     def __str__(self):
         return (
-            f"( {self.unit} ) CTO {self.province} VIA ( "
-            + " ".join(map(lambda x: str(x), self.province_seas))
-            + " )"
+            f"moving {self.unit} by convoy into {self.province} via "
+            + and_items(list(map(lambda x: str(x), self.province_seas)))
         )
 
 
@@ -97,7 +97,7 @@ class RTO(_DAIDEObject):
     location: Location
 
     def __str__(self):
-        return f"( {self.unit} ) RTO {self.location}"
+        return f"retreating {self.unit} to {self.location} "
 
 
 @dataclass
@@ -105,7 +105,7 @@ class DSB(_DAIDEObject):
     unit: Unit
 
     def __str__(self):
-        return f"( {self.unit} ) DSB"
+        return f"disbanding {self.unit} "
 
 
 @dataclass
@@ -113,7 +113,7 @@ class BLD(_DAIDEObject):
     unit: Unit
 
     def __str__(self):
-        return f"( {self.unit} ) BLD"
+        return f"building {self.unit} "
 
 
 @dataclass
@@ -121,7 +121,7 @@ class REM(_DAIDEObject):
     unit: Unit
 
     def __str__(self):
-        return f"( {self.unit} ) REM"
+        return f"removing {self.unit} "
 
 
 @dataclass
@@ -129,7 +129,7 @@ class WVE(_DAIDEObject):
     power: Power
 
     def __str__(self):
-        return f"{self.power} WVE"
+        return f"waiving {self.power} "
 
 
 @dataclass
@@ -138,7 +138,7 @@ class Turn(_DAIDEObject):
     year: int
 
     def __str__(self):
-        return f"{self.season} {self.year}"
+        return f"{self.season} {self.year} "
 
 
 Retreat = Union[RTO, DSB]

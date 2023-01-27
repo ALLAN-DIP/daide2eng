@@ -6,7 +6,7 @@ from typing import List, Optional, Union
 from daidepp.constants import *
 from daidepp.keywords.base_keywords import *
 from daidepp.keywords.daide_object import _DAIDEObject
-
+from daidepp.keywords.keyword_utils import and_items, or_items
 
 @dataclass
 class PCE(_DAIDEObject):
@@ -14,10 +14,10 @@ class PCE(_DAIDEObject):
 
     def __init__(self, *powers):
         self.powers = powers
-        self.__post_init__()
+    
 
     def __str__(self):
-        return "PCE ( " + " ".join(self.powers) + " )"
+        return "peace between " + and_items(self.powers)
 
 
 @dataclass
@@ -25,7 +25,7 @@ class CCL(_DAIDEObject):
     press_message: PressMessage
 
     def __str__(self):
-        return f"CCL ( {self.press_message} )"
+        return f"canceling {self.press_message} "
 
 
 @dataclass
@@ -34,10 +34,10 @@ class TRY(_DAIDEObject):
 
     def __init__(self, *try_tokens):
         self.try_tokens = try_tokens
-        self.__post_init__()
+    
 
     def __str__(self):
-        return "TRY ( " + " ".join(self.try_tokens) + " )"
+        return "trying the following tokens: " + " ".join(self.try_tokens) + " "
 
 
 @dataclass
@@ -45,7 +45,7 @@ class HUH(_DAIDEObject):
     press_message: PressMessage
 
     def __str__(self):
-        return f"HUH ( {self.press_message} )"
+        return f"not understanding {self.press_message} "
 
 
 @dataclass
@@ -53,7 +53,7 @@ class PRP(_DAIDEObject):
     arrangement: Arrangement
 
     def __str__(self):
-        return f"PRP ( {self.arrangement} )"
+        return f"I propose {self.arrangement} "
 
 
 @dataclass
@@ -63,11 +63,10 @@ class ALYVSS(_DAIDEObject):
 
     def __str__(self):
         return (
-            "ALY ( "
-            + " ".join(self.aly_powers)
-            + " ) VSS ( "
-            + " ".join(self.vss_powers)
-            + " )"
+            "ally of "
+            + and_items(self.aly_powers)
+            + "against "
+            + and_items(self.vss_powers)
         )
 
 
@@ -76,7 +75,7 @@ class SLO(_DAIDEObject):
     power: Power
 
     def __str__(self):
-        return f"SLO ( {self.power} )"
+        return f"{self.power} solo"
 
 
 @dataclass
@@ -84,7 +83,7 @@ class NOT(_DAIDEObject):
     arrangement_qry: Union[Arrangement, QRY]
 
     def __str__(self):
-        return f"NOT ( {self.arrangement_qry} )"
+        return f"not {self.arrangement_qry} "
 
 
 @dataclass
@@ -101,13 +100,13 @@ class DRW(_DAIDEObject):
 
     def __init__(self, *powers):
         self.powers = powers
-        self.__post_init__()
+    
 
     def __str__(self):
         if self.powers:
-            return f"DRW ( " + " ".join(self.powers) + " )"
+            return and_items(self.powers) + "draw "
         else:
-            return f"DRW"
+            return f"draw"
 
 
 @dataclass
@@ -115,7 +114,7 @@ class YES(_DAIDEObject):
     press_message: PressMessage
 
     def __str__(self):
-        return f"YES ( {self.press_message} )"
+        return f"accepting {self.press_message} "
 
 
 @dataclass
@@ -123,7 +122,7 @@ class REJ(_DAIDEObject):
     press_message: PressMessage
 
     def __str__(self):
-        return f"REJ ( {self.press_message} )"
+        return f"rejecting {self.press_message} "
 
 
 @dataclass
@@ -131,7 +130,7 @@ class BWX(_DAIDEObject):
     press_message: PressMessage
 
     def __str__(self):
-        return f"BWX ( {self.press_message} )"
+        return f"refusing to answer to {self.press_message} "
 
 
 @dataclass
@@ -139,7 +138,7 @@ class FCT(_DAIDEObject):
     arrangement_qry_not: Union[Arrangement, QRY, NOT]
 
     def __str__(self):
-        return f"FCT ( {self.arrangement_qry_not} )"
+        return f"{self.arrangement_qry_not} is true "
 
 
 @dataclass
@@ -150,9 +149,9 @@ class FRM(_DAIDEObject):
 
     def __str__(self):
         return (
-            f"FRM ( {self.frm_power} ) ( "
-            + " ".join(self.recv_powers)
-            + f" ) ( {self.message} )"
+            f"from {self.frm_power} to "
+            + and_items(self.recv_powers)
+            + f": {self.message} "
         )
 
 
@@ -161,7 +160,7 @@ class XDO(_DAIDEObject):
     order: Order
 
     def __str__(self):
-        return f"XDO ( {self.order} )"
+        return f"ordering {self.order} "
 
 
 @dataclass
@@ -171,11 +170,9 @@ class DMZ(_DAIDEObject):
 
     def __str__(self):
         return (
-            "DMZ ( "
-            + " ".join(self.powers)
-            + " ) ( "
-            + " ".join(map(lambda x: str(x), self.provinces))
-            + " )"
+            and_items(self.powers)
+            + "removing all units from, and not order to, support to, convoy to, retreat to, or build any units in"
+            + and_items(list(map(lambda x: str(x), self.provinces)))
         )
 
 
@@ -185,11 +182,10 @@ class AND(_DAIDEObject):
 
     def __init__(self, *arrangements):
         self.arrangements = arrangements
-        self.__post_init__()
+    
 
     def __str__(self):
-        arr_str = ["( " + str(arr) + " )" for arr in self.arrangements]
-        return f"AND " + " ".join(arr_str)
+        return and_items(self.arrangements)
 
 
 @dataclass
@@ -198,11 +194,10 @@ class ORR(_DAIDEObject):
 
     def __init__(self, *arrangements):
         self.arrangements = arrangements
-        self.__post_init__()
+    
 
     def __str__(self):
-        arr_str = ["( " + str(arr) + " )" for arr in self.arrangements]
-        return f"ORR " + " ".join(arr_str)
+        return or_items(self.arrangements)
 
 
 @dataclass
@@ -215,7 +210,7 @@ class PowerAndSupplyCenters:
         self.supply_centers = supply_centers
 
     def __str__(self):
-        return f"{self.power} " + " ".join(map(lambda x: str(x), self.supply_centers))
+        return f"{self.power} to have " + and_items(list(map(lambda x: str(x), self.supply_centers)))
 
 
 @dataclass
@@ -224,11 +219,11 @@ class SCD(_DAIDEObject):
 
     def __init__(self, *power_and_supply_centers):
         self.power_and_supply_centers = power_and_supply_centers
-        self.__post_init__()
+    
 
     def __str__(self):
-        pas_str = ["( " + str(pas) + " )" for pas in self.power_and_supply_centers]
-        return f"SCD " + " ".join(pas_str)
+        pas_str = [str(pas) + " " for pas in self.power_and_supply_centers]
+        return f"arranging supply centre distribution as follows: " + and_items(pas_str)
 
 
 @dataclass
@@ -237,11 +232,11 @@ class OCC(_DAIDEObject):
 
     def __init__(self, *units):
         self.units = units
-        self.__post_init__()
+    
 
     def __str__(self):
         unit_str = ["( " + str(unit) + " )" for unit in self.units]
-        return f"OCC " + " ".join(unit_str)
+        return f"placing " + and_items(unit_str)
 
 
 @dataclass
@@ -254,12 +249,13 @@ class CHO(_DAIDEObject):
         self.minimum = minimum
         self.maximum = maximum
         self.arrangements = arrangements
-        self.__post_init__()
+    
 
     def __str__(self):
-        arr_str = ["( " + str(arr) + " )" for arr in self.arrangements]
-
-        return f"CHO ( {self.minimum} {self.maximum} ) " + " ".join(arr_str)
+        if self.minimum == self.maximum:
+            return f"choosing {self.minimum} in " + and_items(self.arrangements)
+        else:
+            return f"choosing between {self.minimum} and {self.maximum} in " + and_items(self.arrangements)
 
 
 @dataclass
@@ -267,7 +263,7 @@ class INS(_DAIDEObject):
     arrangement: Arrangement
 
     def __str__(self):
-        return f"INS ( {self.arrangement} )"
+        return f"I insist {self.arrangement} "
 
 
 @dataclass
@@ -275,7 +271,7 @@ class QRY(_DAIDEObject):
     arrangement: Arrangement
 
     def __str__(self):
-        return f"QRY ( {self.arrangement} )"
+        return f"Is {self.arrangement} true? "
 
 
 @dataclass
@@ -283,7 +279,7 @@ class THK(_DAIDEObject):
     arrangement_qry_not: Union[Arrangement, QRY, NOT, None]
 
     def __str__(self):
-        return f"THK ( {self.arrangement_qry_not} )"
+        return f"I think {self.arrangement_qry_not} is true "
 
 
 @dataclass
@@ -291,7 +287,7 @@ class IDK(_DAIDEObject):
     qry_exp_wht_prp_ins_sug: Union[QRY, EXP, WHT, PRP, INS, SUG]
 
     def __str__(self):
-        return f"IDK ( {self.qry_exp_wht_prp_ins_sug} )"
+        return f"I don't know about {self.qry_exp_wht_prp_ins_sug} "
 
 
 @dataclass
@@ -299,7 +295,7 @@ class SUG(_DAIDEObject):
     arrangement: Arrangement
 
     def __str__(self):
-        return f"SUG ( {self.arrangement} )"
+        return f"I suggest {self.arrangement} "
 
 
 @dataclass
@@ -307,7 +303,7 @@ class WHT(_DAIDEObject):
     unit: Unit
 
     def __str__(self):
-        return f"WHT ( {self.unit} )"
+        return f"What do you think about {self.unit} ? "
 
 
 @dataclass
@@ -315,7 +311,7 @@ class HOW(_DAIDEObject):
     province_power: Union[Location, Power]
 
     def __str__(self):
-        return f"HOW ( {self.province_power} )"
+        return f"How do you think we should attack {self.province_power} ? "
 
 
 @dataclass
@@ -324,7 +320,7 @@ class EXP(_DAIDEObject):
     message: Message
 
     def __str__(self):
-        return f"EXP ( {self.turn} ) ( {self.message} )"
+        return f"My explanation for what I did in {self.turn} is {self.message} "
 
 
 @dataclass
@@ -332,7 +328,7 @@ class SRY(_DAIDEObject):
     exp: EXP
 
     def __str__(self):
-        return f"SRY ( {self.exp} )"
+        return f"I'm sorry about {self.exp} "
 
 
 @dataclass
@@ -343,9 +339,9 @@ class FOR(_DAIDEObject):
 
     def __str__(self):
         if not self.end_turn:
-            return f"FOR ( {self.start_turn} ) ( {self.arrangement} )"
+            return f"doing {self.arrangement} in {self.start_turn} "
         else:
-            return f"FOR ( ( {self.start_turn} ) ( {self.end_turn} ) ) ( {self.arrangement} )"
+            return f"doing {self.arrangement} from {self.start_turn} to {self.end_turn} "
 
 
 @dataclass
@@ -356,9 +352,9 @@ class IFF(_DAIDEObject):
 
     def __str__(self):
         if not self.els_press_message:
-            return f"IFF ( {self.arrangement} ) THN ( {self.press_message} )"
+            return f"if {self.arrangement} then {self.press_message} "
         else:
-            return f"IFF ( {self.arrangement} ) THN ( {self.press_message} ) ELS ( {self.els_press_message} )"
+            return f"if {self.arrangement} then {self.press_message} else {self.els_press_message} "
 
 
 @dataclass
@@ -367,7 +363,7 @@ class XOY(_DAIDEObject):
     power_y: Power
 
     def __str__(self):
-        return f"XOY ( {self.power_x} ) ( {self.power_y} )"
+        return f"{self.power_x} owes {self.power_y} "
 
 
 @dataclass
@@ -378,11 +374,11 @@ class YDO(_DAIDEObject):
     def __init__(self, power, *units):
         self.power = power
         self.units = units
-        self.__post_init__()
+    
 
     def __str__(self):
         unit_str = ["( " + str(unit) + " )" for unit in self.units]
-        return f"YDO ( {self.power} ) " + " ".join(unit_str)
+        return f"giving {self.power} the control of" + " ".join(unit_str)
 
 
 @dataclass
@@ -393,9 +389,8 @@ class SND(_DAIDEObject):
 
     def __str__(self):
         return (
-            f"SND ( {self.power} ) ( "
-            + " ".join(self.recv_powers)
-            + f" ) ( {self.message} )"
+            f"{self.power} sending {self.message} to "
+            + and_items(self.recv_powers)
         )
 
 
@@ -407,9 +402,8 @@ class FWD(_DAIDEObject):
 
     def __str__(self):
         return (
-            f"FWD ( "
-            + " ".join(self.powers)
-            + f" ) ( {self.power_1} ) ( {self.power_2} )"
+            f"forwarding to {self.power_2} if {self.power_1} receives message from "
+            + and_items(self.powers)
         )
 
 
@@ -421,9 +415,8 @@ class BCC(_DAIDEObject):
 
     def __str__(self):
         return (
-            f"BCC ( {self.power_1} ) ( "
-            + " ".join(self.powers)
-            + f" ) ( {self.power_2} )"
+            f"forwarding to {self.power_2} if {self.power_1} sends message to "
+            + and_items(self.powers)
         )
 
 
@@ -432,7 +425,7 @@ class WHY(_DAIDEObject):
     fct_thk_prp_ins: Union[FCT, THK, PRP, INS]
 
     def __str__(self):
-        return f"WHY ( {self.fct_thk_prp_ins} )"
+        return f"Why do you believe \"{self.fct_thk_prp_ins}\" ? "
 
 
 @dataclass
@@ -440,7 +433,7 @@ class POB(_DAIDEObject):
     why: WHY
 
     def __str__(self):
-        return f"POB ( {self.why} )"
+        return f"answering {self.why} : the position on the board, or the previous moves, suggests/implies it "
 
 
 @dataclass
@@ -448,7 +441,7 @@ class UHY(_DAIDEObject):
     press_message: PressMessage
 
     def __str__(self):
-        return f"UHY ( {self.press_message} )"
+        return f"I'm unhappy that \"{self.press_message}\" "
 
 
 @dataclass
@@ -456,7 +449,7 @@ class HPY(_DAIDEObject):
     press_message: PressMessage
 
     def __str__(self):
-        return f"HPY ( {self.press_message} )"
+        return f"I'm  happy that \"{self.press_message}\" "
 
 
 @dataclass
@@ -464,13 +457,13 @@ class ANG(_DAIDEObject):
     press_message: PressMessage
 
     def __str__(self):
-        return f"ANG ( {self.press_message} )"
+        return f"I'm angry that \"{self.press_message}\" "
 
 
 @dataclass
 class RFO(_DAIDEObject):
     def __str__(self):
-        return f"RFO"
+        return f"requesting an offer"
 
 
 @dataclass
@@ -479,7 +472,7 @@ class ULB:
     float_val: float
 
     def __str__(self):
-        return f"ULB ( {self.power} {self.float_val} )"
+        return f"utility lower bound of float for {self.power} is {self.float_val} "
 
 
 @dataclass
@@ -488,7 +481,7 @@ class UUB:
     float_val: float
 
     def __str__(self):
-        return f"UUB ( {self.power} {self.float_val} )"
+        return f"utility upper bound of float for {self.power} is {self.float_val} "
 
 
 Reply = Union[YES, REJ, BWX, HUH, FCT, THK, IDK, WHY, POB, UHY, HPY, ANG]
