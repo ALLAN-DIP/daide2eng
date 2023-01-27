@@ -20,3 +20,4 @@ I propose ENG solo, GER solo, RUS solo, ENG solo, GER solo, and RUS solo
 - [ ] Suffix periods to all messages (unless they (or questionmarks) are already there)
 - [ ] Non-rule-based translations/paraphrases
 - [ ] Complete translations for simple tokens (e.g. `ENG` -> `England`)
+- [ ] Use first and second person pronouns

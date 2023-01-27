@@ -25,7 +25,7 @@ class CCL(_DAIDEObject):
     press_message: PressMessage
 
     def __str__(self):
-        return f"canceling {self.press_message} "
+        return f"canceling \"{self.press_message}\" "
 
 
 @dataclass
@@ -45,7 +45,7 @@ class HUH(_DAIDEObject):
     press_message: PressMessage
 
     def __str__(self):
-        return f"not understanding {self.press_message} "
+        return f"not understanding \"{self.press_message}\" "
 
 
 @dataclass
@@ -53,7 +53,7 @@ class PRP(_DAIDEObject):
     arrangement: Arrangement
 
     def __str__(self):
-        return f"I propose that {self.arrangement} "
+        return f"proposing that {self.arrangement} "
 
 
 @dataclass
@@ -114,7 +114,7 @@ class YES(_DAIDEObject):
     press_message: PressMessage
 
     def __str__(self):
-        return f"accepting {self.press_message} "
+        return f"accepting \"{self.press_message}\" "
 
 
 @dataclass
@@ -122,7 +122,7 @@ class REJ(_DAIDEObject):
     press_message: PressMessage
 
     def __str__(self):
-        return f"rejecting {self.press_message} "
+        return f"rejecting \"{self.press_message}\" "
 
 
 @dataclass
@@ -130,7 +130,7 @@ class BWX(_DAIDEObject):
     press_message: PressMessage
 
     def __str__(self):
-        return f"refusing to answer to {self.press_message} "
+        return f"refusing to answer to \"{self.press_message}\" "
 
 
 @dataclass
@@ -138,7 +138,7 @@ class FCT(_DAIDEObject):
     arrangement_qry_not: Union[Arrangement, QRY, NOT]
 
     def __str__(self):
-        return f"{self.arrangement_qry_not} is true "
+        return f"\"{self.arrangement_qry_not}\" is true "
 
 
 @dataclass
@@ -151,7 +151,7 @@ class FRM(_DAIDEObject):
         return (
             f"from {self.frm_power} to "
             + and_items(self.recv_powers)
-            + f": {self.message} "
+            + f": \"{self.message}\" "
         )
 
 
@@ -352,9 +352,9 @@ class IFF(_DAIDEObject):
 
     def __str__(self):
         if not self.els_press_message:
-            return f"if {self.arrangement} then {self.press_message} "
+            return f"if {self.arrangement} then \"{self.press_message}\" "
         else:
-            return f"if {self.arrangement} then {self.press_message} else {self.els_press_message} "
+            return f"if {self.arrangement} then \"{self.press_message}\" else \"{self.els_press_message}\" "
 
 
 @dataclass
