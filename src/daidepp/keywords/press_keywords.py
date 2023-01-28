@@ -53,7 +53,7 @@ class PRP(_DAIDEObject):
     arrangement: Arrangement
 
     def __str__(self):
-        return f"proposing that {self.arrangement} "
+        return f"I propose {self.arrangement} "
 
 
 @dataclass
@@ -160,7 +160,7 @@ class XDO(_DAIDEObject):
     order: Order
 
     def __str__(self):
-        return f"ordering {self.order} "
+        return f"an order {self.order} "
 
 
 @dataclass
@@ -235,7 +235,7 @@ class OCC(_DAIDEObject):
     
 
     def __str__(self):
-        unit_str = ["( " + str(unit) + " )" for unit in self.units]
+        unit_str = [str(unit) for unit in self.units]
         return f"placing " + and_items(unit_str)
 
 
@@ -377,8 +377,8 @@ class YDO(_DAIDEObject):
     
 
     def __str__(self):
-        unit_str = ["( " + str(unit) + " )" for unit in self.units]
-        return f"giving {self.power} the control of" + " ".join(unit_str)
+        unit_str = [str(unit) for unit in self.units]
+        return f"giving {self.power} the control of" + and_items(unit_str)
 
 
 @dataclass

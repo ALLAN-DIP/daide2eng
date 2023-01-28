@@ -5,7 +5,7 @@ when using `daide_visitor.visit(parse_tree)`, instead of returning a daide strin
 
 ```python3
 from daidepp import create_daide_grammar, daide_visitor
-grammar = create_daide_grammar(level=130)
+grammar = create_daide_grammar(level=130, allow_just_arrangement=True, string_type='all')
 message = 'PRP (AND (SLO (ENG)) (SLO (GER)) (SLO (RUS)) (SLO (ENG)) (SLO (GER)) (SLO (RUS)))'
 parse_tree = grammar.parse(message)
 output = daide_visitor.visit(parse_tree) # object composed of dataclass objects in keywords.py
