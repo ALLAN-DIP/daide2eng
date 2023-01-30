@@ -30,3 +30,8 @@ power_dict = {
     "RUSSIA": "RUSSIA",
     "TURKEY": "TURKEY"
 }
+
+unit_dict = {
+    "FLT": "fleet",
+    "AMY": "army",
+}    
