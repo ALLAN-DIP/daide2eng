@@ -22,4 +22,11 @@ power_dict = {
     "ITA": "ITALY",
     "RUS": "RUSSIA",
     "TUR": "TURKEY",
+    "AUSTRIA": "AUSTRIA",
+    "ENGLAND": "ENGLAND",
+    "FRANCE": "FRANCE",
+    "GERMANY": "GERMANY",
+    "ITALY": "ITALY",
+    "RUSSIA": "RUSSIA",
+    "TURKEY": "TURKEY"
 }
