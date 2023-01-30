@@ -503,6 +503,3 @@ class DAIDEVisitor(NodeVisitor):
     def visit_uub(self, node, visited_children) -> UUB:
         _, _, power, utility, _ = visited_children
         return UUB(power, utility)
-
-
-daide_visitor = DAIDEVisitor()
