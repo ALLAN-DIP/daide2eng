@@ -5,7 +5,7 @@ from typing import List, Optional, Union
 
 from daidepp.constants import *
 from daidepp.keywords.daide_object import _DAIDEObject
-from daidepp.keywords.keyword_utils import and_items
+from daidepp.keywords.keyword_utils import and_items, power_dict
 
 
 @dataclass
@@ -30,7 +30,7 @@ class Unit(_DAIDEObject):
     location: Location
 
     def __str__(self):
-        return f"{self.power}'s {self.unit_type} in {self.location} "
+        return f"{power_dict[self.power]}'s {self.unit_type} in {self.location} "
 
 
 @dataclass
@@ -129,7 +129,7 @@ class WVE(_DAIDEObject):
     power: Power
 
     def __str__(self):
-        return f"waiving {self.power} "
+        return f"waiving {power_dict[self.power]} "
 
 
 @dataclass

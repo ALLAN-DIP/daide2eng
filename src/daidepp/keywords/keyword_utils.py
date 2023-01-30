@@ -13,3 +13,13 @@ def or_items(items):
         return str(items[0]) + " or " + str(items[1]) + " "
     else:
         return ", ".join([str(item) for item in items[:-1]]) + ", or " + str(items[-1]) + " "
+
+power_dict = {
+    "AUS": "AUSTRIA",
+    "ENG": "ENGLAND",
+    "FRA": "FRANCE",
+    "GER": "GERMANY",
+    "ITA": "ITALY",
+    "RUS": "RUSSIA",
+    "TUR": "TURKEY",
+}
