@@ -29,7 +29,7 @@ def post_process(sentence: str, self_power, send_power) -> str:
     '''
 
     # remove extra spaces
-    output = " ".join(output.split())
+    output = " ".join(sentence.split())
     # add period if needed
     if not output.endswith('.') or not output.endswith('?'):
         output += '.'
