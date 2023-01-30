@@ -36,13 +36,13 @@ def post_process(sentence: str, self_power, send_power) -> str:
 
     # first & second person possessive
     pattern = send_power + "'s"
-    output = output.replace('your', pattern)
+    output = output.replace(pattern, 'your')
     pattern = self_power + "'s"
-    output = output.replace('my', pattern)
+    output = output.replace(pattern, 'my')
 
     # First & second person substitution
-    output = output.replace('you', send_power)
-    output = output.replace('I', self_power)
+    output = output.replace(send_power, 'you')
+    output = output.replace(self_power, 'I')
 
     # Third singular s
 
