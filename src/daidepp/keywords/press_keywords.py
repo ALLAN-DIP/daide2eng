@@ -51,9 +51,10 @@ class HUH(_DAIDEObject):
 @dataclass
 class PRP(_DAIDEObject):
     arrangement: Arrangement
+    power: str
 
     def __str__(self):
-        return f"I propose {self.arrangement} "
+        return f"{self.power} propose {self.arrangement} "
 
 
 @dataclass
@@ -261,9 +262,10 @@ class CHO(_DAIDEObject):
 @dataclass
 class INS(_DAIDEObject):
     arrangement: Arrangement
+    power: str
 
     def __str__(self):
-        return f"I insist {self.arrangement} "
+        return f"{self.power} insist {self.arrangement} "
 
 
 @dataclass
@@ -277,25 +279,28 @@ class QRY(_DAIDEObject):
 @dataclass
 class THK(_DAIDEObject):
     arrangement_qry_not: Union[Arrangement, QRY, NOT, None]
+    power: str
 
     def __str__(self):
-        return f"I think {self.arrangement_qry_not} is true "
+        return f"{self.power} think {self.arrangement_qry_not} is true "
 
 
 @dataclass
 class IDK(_DAIDEObject):
     qry_exp_wht_prp_ins_sug: Union[QRY, EXP, WHT, PRP, INS, SUG]
+    power: str
 
     def __str__(self):
-        return f"I don't know about {self.qry_exp_wht_prp_ins_sug} "
+        return f"{self.power} don't know about {self.qry_exp_wht_prp_ins_sug} "
 
 
 @dataclass
 class SUG(_DAIDEObject):
     arrangement: Arrangement
+    power: str
 
     def __str__(self):
-        return f"I suggest {self.arrangement} "
+        return f"{self.power} suggest {self.arrangement} "
 
 
 @dataclass
@@ -318,9 +323,10 @@ class HOW(_DAIDEObject):
 class EXP(_DAIDEObject):
     turn: Turn
     message: Message
+    power: str
 
     def __str__(self):
-        return f"My explanation for what I did in {self.turn} is {self.message} "
+        return f"The explanation for what {self.power} did in {self.turn} is {self.message} "
 
 
 @dataclass
