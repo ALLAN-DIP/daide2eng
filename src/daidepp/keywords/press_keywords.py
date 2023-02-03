@@ -6,7 +6,7 @@ from typing import List, Optional, Union
 from daidepp.constants import *
 from daidepp.keywords.base_keywords import *
 from daidepp.keywords.daide_object import _DAIDEObject
-from daidepp.keywords.keyword_utils import and_items, or_items, power_dict
+from daidepp.keywords.keyword_utils import and_items, or_items
 
 @dataclass
 class PCE(_DAIDEObject):
@@ -17,8 +17,7 @@ class PCE(_DAIDEObject):
     
 
     def __str__(self):
-        all_powers = [power_dict[power] for power in self.powers]
-        return "peace between " + and_items(all_powers)
+        return "peace between " + and_items(self.powers)
 
 
 @dataclass
@@ -55,7 +54,7 @@ class PRP(_DAIDEObject):
     power: str
 
     def __str__(self):
-        return f"{power_dict[self.power]} propose {self.arrangement} "
+        return f"{self.power} propose {self.arrangement} "
 
 
 @dataclass
@@ -64,14 +63,11 @@ class ALYVSS(_DAIDEObject):
     vss_powers: List[Power]
 
     def __str__(self):
-        all_aly_powers = [power_dict[power] for power in self.aly_powers]
-        all_vss_powers = [power_dict[power] for power in self.vss_powers]
-
         return (
-            "ally of "
-            + and_items(all_aly_powers)
+            "an ally of "
+            + and_items(self.aly_powers)
             + "against "
-            + and_items(all_vss_powers)
+            + and_items(self.vss_powers)
         )
 
 
@@ -80,7 +76,7 @@ class SLO(_DAIDEObject):
     power: Power
 
     def __str__(self):
-        return f"{power_dict[self.power]} solo"
+        return f"{self.power} solo"
 
 
 @dataclass
@@ -109,8 +105,7 @@ class DRW(_DAIDEObject):
 
     def __str__(self):
         if self.powers:
-            all_powers = [power_dict[power] for power in self.powers]
-            return and_items(all_powers) + "draw "
+            return and_items(self.powers) + "draw "
         else:
             return f"draw"
 
@@ -154,10 +149,9 @@ class FRM(_DAIDEObject):
     message: Message
 
     def __str__(self):
-        all_recv_powers = [power_dict[power] for power in self.recv_powers]
         return (
             f"from {self.frm_power} to "
-            + and_items(all_recv_powers)
+            + and_items(self.recv_powers)
             + f": \"{self.message}\" "
         )
 
@@ -176,9 +170,8 @@ class DMZ(_DAIDEObject):
     provinces: List[Location]
 
     def __str__(self):
-        all_powers = [power_dict[power] for power in self.powers]
         return (
-            and_items(all_powers)
+            and_items(self.powers)
             + "removing all units from, and not ordering to, supporting to, convoying to, retreating to, or building any units in "
             + and_items(list(map(lambda x: str(x), self.provinces)))
         )
@@ -218,7 +211,7 @@ class PowerAndSupplyCenters:
         self.supply_centers = supply_centers
 
     def __str__(self):
-        return f"{power_dict[self.power]} to have " + and_items(list(map(lambda x: str(x), self.supply_centers)))
+        return f"{self.power} to have " + and_items(list(map(lambda x: str(x), self.supply_centers)))
 
 
 @dataclass
@@ -272,7 +265,7 @@ class INS(_DAIDEObject):
     power: str
 
     def __str__(self):
-        return f"{power_dict[self.power]} insist {self.arrangement} "
+        return f"{self.power} insist {self.arrangement} "
 
 
 @dataclass
@@ -289,7 +282,7 @@ class THK(_DAIDEObject):
     power: str
 
     def __str__(self):
-        return f"{power_dict[self.power]} think {self.arrangement_qry_not} is true "
+        return f"{self.power} think {self.arrangement_qry_not} is true "
 
 
 @dataclass
@@ -298,7 +291,7 @@ class IDK(_DAIDEObject):
     power: str
 
     def __str__(self):
-        return f"{power_dict[self.power]} don't know about {self.qry_exp_wht_prp_ins_sug} "
+        return f"{self.power} don't know about {self.qry_exp_wht_prp_ins_sug} "
 
 
 @dataclass
@@ -307,7 +300,7 @@ class SUG(_DAIDEObject):
     power: str
 
     def __str__(self):
-        return f"{power_dict[self.power]} suggest {self.arrangement} "
+        return f"{self.power} suggest {self.arrangement} "
 
 
 @dataclass
@@ -333,7 +326,7 @@ class EXP(_DAIDEObject):
     power: str
 
     def __str__(self):
-        return f"The explanation for what {power_dict[self.power]} did in {self.turn} is {self.message} "
+        return f"The explanation for what {self.power} did in {self.turn} is {self.message} "
 
 
 @dataclass
@@ -376,7 +369,7 @@ class XOY(_DAIDEObject):
     power_y: Power
 
     def __str__(self):
-        return f"{power_dict[self.power_x]} owes {power_dict[self.power_y]} "
+        return f"{self.power_x} owes {self.power_y} "
 
 
 @dataclass
@@ -391,7 +384,7 @@ class YDO(_DAIDEObject):
 
     def __str__(self):
         unit_str = [str(unit) for unit in self.units]
-        return f"giving {power_dict[self.power]} the control of" + and_items(unit_str)
+        return f"giving {self.power} the control of" + and_items(unit_str)
 
 
 @dataclass
@@ -401,11 +394,10 @@ class SND(_DAIDEObject):
     message: Message
 
     def __str__(self):
-        all_recv_powers = [power_dict[recv_power] for recv_power in self.recv_powers]
 
         return (
-            f"{power_dict[self.power]} sending {self.message} to "
-            + and_items(all_recv_powers)
+            f"{self.power} sending {self.message} to "
+            + and_items(self.recv_powers)
         )
 
 
@@ -416,11 +408,9 @@ class FWD(_DAIDEObject):
     power_2: Power
 
     def __str__(self):
-        all_powers = [power_dict[power] for power in self.powers]
-
         return (
-            f"forwarding to {power_dict[self.power_2]} if {power_dict[self.power_1]} receives message from "
-            + and_items(all_powers)
+            f"forwarding to {self.power_2} if {self.power_1} receives message from "
+            + and_items(self.powers)
         )
 
 
@@ -431,10 +421,9 @@ class BCC(_DAIDEObject):
     power_2: Power
 
     def __str__(self):
-        all_powers = [power_dict[power] for power in self.powers]
         return (
-            f"forwarding to {power_dict[self.power_2]} if {power_dict[self.power_1]} sends message to "
-            + and_items(all_powers)
+            f"forwarding to {self.power_2} if {self.power_1} sends message to "
+            + and_items(self.powers)
         )
 
 
@@ -490,7 +479,7 @@ class ULB:
     float_val: float
 
     def __str__(self):
-        return f"utility lower bound of float for {power_dict[self.power]} is {self.float_val} "
+        return f"utility lower bound of float for {self.power} is {self.float_val} "
 
 
 @dataclass
@@ -499,7 +488,7 @@ class UUB:
     float_val: float
 
     def __str__(self):
-        return f"utility upper bound of float for {power_dict[self.power]} is {self.float_val} "
+        return f"utility upper bound of float for {self.power} is {self.float_val} "
 
 
 Reply = Union[YES, REJ, BWX, HUH, FCT, THK, IDK, WHY, POB, UHY, HPY, ANG]

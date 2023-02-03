@@ -12,8 +12,9 @@ logger.addHandler(logging.StreamHandler())
 class DAIDEVisitor(NodeVisitor):
     def __init__(self, power, send_power) -> None:
         super().__init__()
-        self.power = power
-        self.send_power = send_power
+        
+        self.power = power if power and len(power) > 0 else "I"
+        self.send_power = send_power if send_power and len(send_power) > 0 else "You"
 
     def visit_message(self, node, visited_children) -> Message:
         return visited_children[0]

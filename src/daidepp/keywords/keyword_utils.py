@@ -15,6 +15,13 @@ def or_items(items):
         return ", ".join([str(item) for item in items[:-1]]) + ", or " + str(items[-1]) + " "
 
 power_dict = {
+    "AUSTRIA": "AUSTRIA",
+    "ENGLANG": "ENGLAND",
+    "FRANCE": "FRANCE",
+    "GERMANY": "GERMANY",
+    "ITALY": "ITALY",
+    "RUSSIA": "RUSSIA",
+    "TURKEY": "TURKEY",
     "AUS": "AUSTRIA",
     "ENG": "ENGLAND",
     "FRA": "FRANCE",
@@ -22,14 +29,9 @@ power_dict = {
     "ITA": "ITALY",
     "RUS": "RUSSIA",
     "TUR": "TURKEY",
-    "AUSTRIA": "AUSTRIA",
-    "ENGLAND": "ENGLAND",
-    "FRANCE": "FRANCE",
-    "GERMANY": "GERMANY",
-    "ITALY": "ITALY",
-    "RUSSIA": "RUSSIA",
-    "TURKEY": "TURKEY"
 }
+
+power_list = ["AUSTRIA", "ENGLAND", "FRANCE", "GERMANY", "ITALY", "RUSSIA", "TURKEY"]
 
 unit_dict = {
     "FLT": "fleet",

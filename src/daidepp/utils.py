@@ -1,8 +1,9 @@
 from daidepp import create_daide_grammar
 from daidepp.daide_visitor import DAIDEVisitor
+from daidepp.keywords.keyword_utils import power_dict, power_list
 import parsimonious
 
-def gen_English(daide: str, self_power: str, send_power: str) -> str:
+def gen_English(daide: str, self_power=None, send_power=None) -> str:
     '''
     Generate English from DAIDE
     :param daide: DAIDE string, e.g. '(ENG FLT LON) BLD'
@@ -17,12 +18,12 @@ def gen_English(daide: str, self_power: str, send_power: str) -> str:
         daide_visitor = DAIDEVisitor(self_power, send_power)
         output = str(daide_visitor.visit(parse_tree))
 
-        return post_process(output, self_power, send_power)
+        return output
         
     except parsimonious.exceptions.ParseError:
         return 'ERROR parsing ' + daide
     
-def post_process(sentence: str, self_power, send_power) -> str:
+def post_process(sentence: str, self_power=None, send_power=None) -> str:
     '''
     Make the sentence more grammatical and readable
     :param sentence: DAIDE string, e.g. '(ENG FLT LON) BLD'
@@ -34,15 +35,17 @@ def post_process(sentence: str, self_power, send_power) -> str:
     if not output.endswith('.') or not output.endswith('?'):
         output += '.'
 
-    # first & second person possessive
-    pattern = send_power + "'s"
-    output = output.replace(pattern, 'your')
-    pattern = self_power + "'s"
-    output = output.replace(pattern, 'my')
 
-    # First & second person substitution
-    output = output.replace(send_power, 'you')
-    output = output.replace(self_power, 'I')
+    # first & second person possessive/substitution
+    if (send_power in power_list):
+        pattern = send_power + "'s"
+        output = output.replace(pattern, 'your')
+        output = output.replace(send_power, 'you')
+
+    if (self_power in power_list):
+        pattern = self_power + "'s"
+        output = output.replace(pattern, 'my')
+        output = output.replace(self_power, 'I')
 
     # Third singular s
 
