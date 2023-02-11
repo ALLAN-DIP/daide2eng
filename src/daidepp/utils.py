@@ -1,7 +1,31 @@
 from daidepp import create_daide_grammar
 from daidepp.daide_visitor import DAIDEVisitor
 from daidepp.keywords.keyword_utils import power_dict, power_list
-import parsimonious
+import parsimonious, re
+
+def preprocess(daide: str) -> str:
+    '''
+        change the dipnet syntax to daidepp syntax
+    '''
+    # substitutions
+    # case CTO province VIA (sea_province sea_province ...)
+
+    # case RTO province
+
+    # case DMZ (power power ...) (province province ...)
+
+    # case HOW (province)
+
+    # 
+
+    # since 'ENG' is used both as a power and a location, we need to substitute
+    # the location with 'ECH'. 
+    return daide.replace('BOT', 'GOB') \
+                .replace('FLT ENG', 'FLT ECH') \
+                .replace('AMY ENG', 'AMY ECH') \
+                .replace('CTO LON', 'CTO ECH')
+
+    
 
 def gen_English(daide: str, self_power=None, send_power=None) -> str:
     '''
