@@ -53,6 +53,9 @@ def post_process(sentence: str, self_power=None, send_power=None) -> str:
     :param sentence: DAIDE string, e.g. '(ENG FLT LON) BLD'
     '''
 
+    if sentence.startswith('ERROR'):
+        return sentence
+
     # remove extra spaces
     output = " ".join(sentence.split())
     # add period if needed
