@@ -3,7 +3,7 @@ from daidepp.daide_visitor import DAIDEVisitor
 from daidepp.keywords.keyword_utils import power_dict, power_list
 import parsimonious, re
 
-def preprocess(daide: str) -> str:
+def pre_process(daide: str) -> str:
     '''
         change the dipnet syntax to daidepp syntax
     '''
@@ -71,6 +71,8 @@ def post_process(sentence: str, self_power=None, send_power=None) -> str:
         output = output.replace(pattern, 'my')
         output = output.replace(self_power, 'I')
 
-    # Third singular s
+    # TODO: Third singular s for verbs
+
+    # TODO: disambiguate 'ENG' as a power and a location
 
     return output
