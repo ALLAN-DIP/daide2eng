@@ -1,6 +1,7 @@
 from daidepp import create_daide_grammar
 from daidepp.daide_visitor import DAIDEVisitor
 from daidepp.keywords.keyword_utils import power_dict, power_list
+from typing import List
 import parsimonious, re
 
 def pre_process(daide: str) -> str:
@@ -79,3 +80,24 @@ def post_process(sentence: str, self_power=None, send_power=None) -> str:
     # TODO: disambiguate 'ENG' as a power and a location
 
     return output
+
+# remove punctuations and use lowercase
+def tokenize(sentence: str) -> List[str]:
+    def trim_all(token: str) -> str:
+        while token[0] == '"' or token[0] == '(' or token[0] == ' ':
+            token = token[1:]
+        while token[-1] == '"' or token[-1] == '.' or token[-1] == ',' or token[-1] == ')' or token[-1] == ' ':
+            token = token[:-1]
+        return token
+
+    return list(map(lambda x: trim_all(x), sentence.split(' ')))
+
+def is_daide(tokens: List[str]) -> bool:
+    '''
+    Check if the tokens are three uppercase letters
+    '''
+    for token in tokens:
+        if not token.isupper() or len(token) != 3:
+            return False
+        
+    return True
