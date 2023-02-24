@@ -92,10 +92,12 @@ def tokenize(sentence: str) -> List[str]:
 
     return list(map(lambda x: trim_all(x), sentence.split(' ')))
 
-def is_daide(tokens: List[str]) -> bool:
+def is_daide(sentence: str) -> bool:
     '''
     Check if the tokens are three uppercase letters
     '''
+    tokens = tokenize(sentence)
+
     for token in tokens:
         if not token.isupper() or len(token) != 3:
             return False
