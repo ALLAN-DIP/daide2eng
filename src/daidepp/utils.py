@@ -84,11 +84,9 @@ def post_process(sentence: str, self_power=None, send_power=None) -> str:
 # remove punctuations and use lowercase
 def tokenize(sentence: str) -> List[str]:
     def trim_all(token: str) -> str:
-        if (len(token) < 3):
-            return None
-        while token[0] == '"' or token[0] == '(' or token[0] == ' ':
+        while len(token) > 0 and (token[0] == '"' or token[0] == '(' or token[0] == ' '):
             token = token[1:]
-        while token[-1] == '"' or token[-1] == '.' or token[-1] == ',' or token[-1] == ')' or token[-1] == ' ':
+        while len(token) > 0 and (token[-1] == '"' or token[-1] == '.' or token[-1] == ',' or token[-1] == ')' or token[-1] == ' '):
             token = token[:-1]
         return token
 
