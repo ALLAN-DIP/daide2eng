@@ -81,7 +81,7 @@ def post_process(sentence: str, self_power=None, send_power=None) -> str:
 
     return output
 
-# remove punctuations and use lowercase
+# remove punctuations
 def tokenize(sentence: str) -> List[str]:
     def trim_all(token: str) -> str:
         while len(token) > 0 and (token[0] == '"' or token[0] == '(' or token[0] == ' '):
@@ -90,7 +90,7 @@ def tokenize(sentence: str) -> List[str]:
             token = token[:-1]
         return token
 
-    tokens = list(map(lambda x: trim_all(x), sentence.split(' ')))
+    tokens = list(map(lambda x: trim_all(x), sentence.replace('(', ' ').replace(')', ' ').split(' ')))
     return list(filter(None, tokens))
 
 def is_daide(sentence: str) -> bool:
