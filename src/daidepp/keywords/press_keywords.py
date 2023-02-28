@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
-from typing import List, Optional, Union
+from dataclasses import dataclass, field
+from typing import List, Optional, Tuple, Union
 
 from daidepp.constants import *
 from daidepp.keywords.base_keywords import *
@@ -10,9 +10,9 @@ from daidepp.keywords.keyword_utils import and_items, or_items
 
 @dataclass
 class PCE(_DAIDEObject):
-    powers: List[Power]
+    powers: Tuple[Power]
 
-    def __init__(self, *powers):
+    def __init__(self, *powers: Power):
         self.powers = powers
     
 
@@ -30,7 +30,7 @@ class CCL(_DAIDEObject):
 
 @dataclass
 class TRY(_DAIDEObject):
-    try_tokens: List[TryTokens]
+    try_tokens: Tuple[TryTokens]
 
     def __init__(self, *try_tokens):
         self.try_tokens = try_tokens
@@ -97,9 +97,9 @@ class NAR(_DAIDEObject):
 
 @dataclass
 class DRW(_DAIDEObject):
-    powers: Optional[List[Power]] = ()
+    powers: Tuple[Power] = tuple()
 
-    def __init__(self, *powers):
+    def __init__(self, *powers: Power):
         self.powers = powers
     
 
@@ -158,7 +158,7 @@ class FRM(_DAIDEObject):
 
 @dataclass
 class XDO(_DAIDEObject):
-    order: Order
+    order: Command
 
     def __str__(self):
         return f"an order {self.order} "
@@ -166,8 +166,33 @@ class XDO(_DAIDEObject):
 
 @dataclass
 class DMZ(_DAIDEObject):
+    """This is an arrangement for the listed powers to remove all units from, and not order to, support to, convoy to, retreat to, or build any units in any of the list of provinces. Eliminated powers must not be included in the power list. The arrangement is continuous (i.e. it isn't just for the current turn)."""
+
     powers: List[Power]
     provinces: List[Location]
+    exhaustive_provinces: List[Location] = field(init=False)
+
+    def __post_init__(self):
+        # This is helpful for checking if a move violates a DMZ order. All possible
+        # location objects are included, so one can simply do something like
+        # `assert order.loc not in dmz.exhaustive_provinces`
+        exhaustive_provinces: List[Location] = []
+        for province in self.provinces:
+            if province == Location(province="STP"):
+                exhaustive_provinces.append(Location(province="STP"))
+                exhaustive_provinces.append(Location(province="STP", coast="NCS"))
+                exhaustive_provinces.append(Location(province="STP", coast="SCS"))
+            elif province == Location(province="SPA"):
+                exhaustive_provinces.append(Location(province="SPA"))
+                exhaustive_provinces.append(Location(province="SPA", coast="NCS"))
+                exhaustive_provinces.append(Location(province="SPA", coast="SCS"))
+            elif province == Location(province="BUL"):
+                exhaustive_provinces.append(Location(province="BUL"))
+                exhaustive_provinces.append(Location(province="BUL", coast="ECS"))
+                exhaustive_provinces.append(Location(province="BUL", coast="SCS"))
+            else:
+                exhaustive_provinces.append(province)
+        self.exhaustive_provinces = exhaustive_provinces
 
     def __str__(self):
         return (
@@ -179,9 +204,9 @@ class DMZ(_DAIDEObject):
 
 @dataclass
 class AND(_DAIDEObject):
-    arrangements: List[Arrangement]
+    arrangements: Tuple[Arrangement]
 
-    def __init__(self, *arrangements):
+    def __init__(self, *arrangements: Arrangement):
         self.arrangements = arrangements
     
 
@@ -191,9 +216,9 @@ class AND(_DAIDEObject):
 
 @dataclass
 class ORR(_DAIDEObject):
-    arrangements: List[Arrangement]
+    arrangements: Tuple[Arrangement]
 
-    def __init__(self, *arrangements):
+    def __init__(self, *arrangements: Arrangement):
         self.arrangements = arrangements
     
 
@@ -204,9 +229,9 @@ class ORR(_DAIDEObject):
 @dataclass
 class PowerAndSupplyCenters:
     power: Power
-    supply_centers: List[Location]  # Supply centers
+    supply_centers: Tuple[Location]  # Supply centers
 
-    def __init__(self, power, *supply_centers):
+    def __init__(self, power, *supply_centers: Location):
         self.power = power
         self.supply_centers = supply_centers
 
@@ -216,9 +241,9 @@ class PowerAndSupplyCenters:
 
 @dataclass
 class SCD(_DAIDEObject):
-    power_and_supply_centers: List[PowerAndSupplyCenters]
+    power_and_supply_centers: Tuple[PowerAndSupplyCenters]
 
-    def __init__(self, *power_and_supply_centers):
+    def __init__(self, *power_and_supply_centers: PowerAndSupplyCenters):
         self.power_and_supply_centers = power_and_supply_centers
     
 
@@ -229,9 +254,9 @@ class SCD(_DAIDEObject):
 
 @dataclass
 class OCC(_DAIDEObject):
-    units: List[Unit]
+    units: Tuple[Unit]
 
-    def __init__(self, *units):
+    def __init__(self, *units: Unit):
         self.units = units
     
 
@@ -244,9 +269,9 @@ class OCC(_DAIDEObject):
 class CHO(_DAIDEObject):
     minimum: int
     maximum: int
-    arrangements: List[Arrangement]
+    arrangements: Tuple[Arrangement]
 
-    def __init__(self, minimum, maximum, *arrangements):
+    def __init__(self, minimum: int, maximum: int, *arrangements: Arrangement):
         self.minimum = minimum
         self.maximum = maximum
         self.arrangements = arrangements
@@ -375,7 +400,7 @@ class XOY(_DAIDEObject):
 @dataclass
 class YDO(_DAIDEObject):
     power: Power
-    units: List[Unit]
+    units: Tuple[Unit]
 
     def __init__(self, power, *units):
         self.power = power
@@ -493,7 +518,19 @@ class UUB:
 
 Reply = Union[YES, REJ, BWX, HUH, FCT, THK, IDK, WHY, POB, UHY, HPY, ANG]
 PressMessage = Union[
-    PRP, CCL, FCT, TRY, FRM, THK, INS, QRY, SUG, HOW, WHT, EXP, IFF, ULB, UUB
+    PRP,
+    CCL,
+    FCT,
+    TRY,
+    FRM,
+    THK,
+    INS,
+    QRY,
+    SUG,
+    HOW,
+    WHT,
+    EXP,
+    IFF,
 ]
 Message = Union[PressMessage, Reply]
 Arrangement = Union[
@@ -512,6 +549,8 @@ Arrangement = Union[
     SND,
     FWD,
     BCC,
+    ULB,
+    UUB,
     ROF,
 ]
 

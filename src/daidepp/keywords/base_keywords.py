@@ -3,24 +3,36 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import List, Optional, Union
 
+from typing_extensions import get_args
+
 from daidepp.constants import *
 from daidepp.keywords.daide_object import _DAIDEObject
 from daidepp.keywords.keyword_utils import and_items, unit_dict
 
+_prov_no_coast = [prov for lit in get_args(ProvinceNoCoast) for prov in get_args(lit)]
+
 
 @dataclass
 class Location:
-    province: Union[str, Location]
-    coast: Optional[str] = None
+    province: ProvinceNoCoast
+    coast: Optional[Coast] = None
 
-    def __post_init__(self):
-        if isinstance(self.province, Location):
-            self.province = self.province.province
+    def __init__(
+        self, province: Union[ProvinceNoCoast, Location], coast: Optional[Coast] = None
+    ) -> None:
+        if isinstance(province, Location):
+            self.province = province.province
+        else:
+            self.province = province
+        self.coast = coast
 
     def __str__(self) -> str:
         if self.coast:
             return f"({self.province} {self.coast})"
         return self.province
+
+    def __hash__(self) -> int:
+        return hash(str(self))
 
 
 @dataclass
@@ -28,6 +40,11 @@ class Unit(_DAIDEObject):
     power: Power
     unit_type: UnitType
     location: Location
+
+    def __post_init__(self):
+        if isinstance(self.location, str):
+            self.location = Location(province=self.location)
+        super().__post_init__()
 
     def __str__(self):
         unit = unit_dict[self.unit_type]
@@ -41,6 +58,10 @@ class HLD(_DAIDEObject):
     def __str__(self):
         return f"holding {self.unit} "
 
+    @property
+    def location(self) -> Location:
+        return self.unit.location
+
 
 @dataclass
 class MTO(_DAIDEObject):
@@ -52,10 +73,30 @@ class MTO(_DAIDEObject):
 
 
 @dataclass
-class SUP:
+class SUP(_DAIDEObject):
     supporting_unit: Unit
     supported_unit: Unit
     province_no_coast: Optional[ProvinceNoCoast] = None
+
+    @property
+    def unit(self) -> Unit:
+        """Unit attribute to keep API consistent
+
+        Returns:
+            Unit: The supporting unit (i.e. the one executing the order)
+        """
+        return self.supporting_unit
+
+    @property
+    def province_no_coast_location(self) -> Optional[Location]:
+        if self.province_no_coast == None:
+            return self.province_no_coast
+        else:
+            return Location(self.province_no_coast)
+
+    @property
+    def location(self) -> Location:
+        return self.unit.location
 
     def __str__(self):
         if not self.province_no_coast:
@@ -65,13 +106,31 @@ class SUP:
 
 
 @dataclass
-class CVY:
+class CVY(_DAIDEObject):
     convoying_unit: Unit
     convoyed_unit: Unit
-    province: ProvinceNoCoast
+    province: Location
+
+    def __post_init__(self):
+        if isinstance(self.province, str):
+            self.province = Location(province=self.province)
+        super().__post_init__()
 
     def __str__(self):
         return f"using {self.convoying_unit} to convoy {self.convoyed_unit} into {self.province} "
+
+    @property
+    def unit(self) -> Unit:
+        """Unit attribute to keep API consistent
+
+        Returns:
+            Unit: The convoying unit (i.e. the fleet)
+        """
+        return self.convoying_unit
+
+    @property
+    def location(self) -> Location:
+        return self.unit.location
 
 
 @dataclass
@@ -91,6 +150,10 @@ class MoveByCVY(_DAIDEObject):
             + and_items(list(map(lambda x: str(x), self.province_seas)))
         )
 
+    @property
+    def location(self) -> Location:
+        return self.province
+
 
 @dataclass
 class RTO(_DAIDEObject):
@@ -108,6 +171,10 @@ class DSB(_DAIDEObject):
     def __str__(self):
         return f"disbanding {self.unit} "
 
+    @property
+    def location(self) -> None:
+        return None
+
 
 @dataclass
 class BLD(_DAIDEObject):
@@ -115,6 +182,10 @@ class BLD(_DAIDEObject):
 
     def __str__(self):
         return f"building {self.unit} "
+
+    @property
+    def location(self) -> Location:
+        return self.unit.location
 
 
 @dataclass
@@ -124,13 +195,23 @@ class REM(_DAIDEObject):
     def __str__(self):
         return f"removing {self.unit} "
 
+    @property
+    def location(self) -> None:
+        return None
+
 
 @dataclass
 class WVE(_DAIDEObject):
+    """Wave a build"""
+
     power: Power
 
     def __str__(self):
         return f"waiving {self.power} "
+
+    @property
+    def location(self) -> None:
+        return None
 
 
 @dataclass
@@ -142,8 +223,6 @@ class Turn(_DAIDEObject):
         return f"{self.season} {self.year} "
 
 
-Retreat = Union[RTO, DSB]
-Build = Union[BLD, REM, WVE]
 Order = Union[
     HLD,
     MTO,
@@ -151,4 +230,7 @@ Order = Union[
     CVY,
     MoveByCVY,
 ]
+Build = Union[BLD, REM, WVE]
+Retreat = Union[RTO, DSB]
+
 Command = Union[Order, Retreat, Build]
