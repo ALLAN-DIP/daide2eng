@@ -41,7 +41,12 @@ def gen_English(daide: str, self_power=None, send_power=None) -> str:
 
     try:
         # create daide grammar
-        grammar = create_daide_grammar(level=130, allow_just_arrangement=True, string_type='all')
+        grammar = create_daide_grammar(
+            level=130, 
+            allow_just_arrangement=True, 
+            string_type='all'
+        )
+        
         parse_tree = grammar.parse(daide)
         daide_visitor = DAIDEVisitor(self_power, send_power)
         output = str(daide_visitor.visit(parse_tree))
@@ -87,20 +92,33 @@ def post_process(sentence: str, self_power=None, send_power=None) -> str:
 # remove punctuations
 def tokenize(sentence: str) -> List[str]:
     def trim_all(token: str) -> str:
-
-        while len(token) > 0 and (token[0] == '"' or token[0] == ' '):
+        if len(token) > 0:
+            token = token.strip()
+        while len(token) > 0 and token[0] == '"':
             token = token[1:]
-        while len(token) > 0 and (token[-1] == '"' or token[-1] == '.' or token[-1] == ',' or token[-1] == ' '):
+        while len(token) > 0 and not token[-1].isalnum():
             token = token[:-1]
         return token
 
-    tokens = list(map(lambda x: trim_all(x), sentence.replace('(', ' ').replace(')', ' ').split(' ')))
+    tokens = list(map(lambda x: trim_all(x), 
+                      sentence.replace('(', ' ')
+                              .replace(')', ' ')
+                              .split(' ')
+                 ))
+    
     return list(filter(None, tokens))
 
 def is_daide(sentence: str) -> bool:
     '''
     Check if the tokens are three uppercase letters
     '''
+    PRESS_TOKENS = ['PRP', 'YES', 'REJ', 'BWX', 'HUH', 'CCL', 'FCT', 'TRY',
+                    'INS', 'QRY', 'THK', 'IDK', 'WHT', 'HOW', 'EXP', 'SRY', 
+                    'IFF', 'FRM', 'WHY', 'POB', 'UHY', 'HPY', 'ANG']
+    
+    if sentence[:3] in PRESS_TOKENS:
+        return True
+
     tokens = tokenize(pre_process(sentence))
 
     for token in tokens:
