@@ -17,14 +17,17 @@ def pre_process(daide: str) -> str:
 
     # case HOW (province)
 
-    # 
-
     # since 'ENG' is used both as a power and a location, we need to substitute
-    # the location with 'ECH'. 
+    # the location with 'ECH'.
+    # and replace coast with SCS, NCS, ECS, WCS
     return daide.replace('BOT', 'GOB') \
                 .replace('FLT ENG', 'FLT ECH') \
                 .replace('AMY ENG', 'AMY ECH') \
-                .replace('CTO LON', 'CTO ECH')
+                .replace('CTO LON', 'CTO ECH') \
+                .replace('/SC', ' SCS') \
+                .replace('/NC', ' NCS') \
+                .replace('/EC', ' ECS') \
+                .replace('/WC', ' WCS')
 
     
 
@@ -84,9 +87,10 @@ def post_process(sentence: str, self_power=None, send_power=None) -> str:
 # remove punctuations
 def tokenize(sentence: str) -> List[str]:
     def trim_all(token: str) -> str:
-        while len(token) > 0 and (token[0] == '"' or token[0] == '(' or token[0] == ' '):
+
+        while len(token) > 0 and (token[0] == '"' or token[0] == ' '):
             token = token[1:]
-        while len(token) > 0 and (token[-1] == '"' or token[-1] == '.' or token[-1] == ',' or token[-1] == ')' or token[-1] == ' '):
+        while len(token) > 0 and (token[-1] == '"' or token[-1] == '.' or token[-1] == ',' or token[-1] == ' '):
             token = token[:-1]
         return token
 
@@ -97,7 +101,7 @@ def is_daide(sentence: str) -> bool:
     '''
     Check if the tokens are three uppercase letters
     '''
-    tokens = tokenize(sentence)
+    tokens = tokenize(pre_process(sentence))
 
     for token in tokens:
         if not token.isupper() or len(token) != 3:
