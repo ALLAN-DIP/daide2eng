@@ -42,7 +42,7 @@ def gen_English(daide: str, self_power=None, send_power=None) -> str:
     try:
         # create daide grammar
         grammar = create_daide_grammar(
-            level=130, 
+            level=160, 
             allow_just_arrangement=True, 
             string_type='all'
         )

@@ -92,7 +92,7 @@ class NAR(_DAIDEObject):
     arrangement: Arrangement
 
     def __str__(self):
-        return f"NAR ( {self.arrangement} )"
+        return f"lack of arragement: {self.arrangement} "
 
 
 @dataclass
@@ -139,7 +139,7 @@ class FCT(_DAIDEObject):
     arrangement_qry_not: Union[Arrangement, QRY, NOT]
 
     def __str__(self):
-        return f"\"{self.arrangement_qry_not}\" is true "
+        return f"I will do the following in the current round: \"{self.arrangement_qry_not}\" "
 
 
 @dataclass
