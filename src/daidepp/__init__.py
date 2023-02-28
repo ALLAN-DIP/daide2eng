@@ -4,7 +4,7 @@ from daidepp.grammar import (
     create_grammar_from_press_keywords,
 )
 from daidepp.keywords import *
-from daidepp.visitor import DAIDEVisitor, daide_visitor
+from daidepp.visitor import DAIDEVisitor
 
 try:
     from importlib.metadata import version

@@ -44,7 +44,6 @@ class Unit(_DAIDEObject):
     def __post_init__(self):
         if isinstance(self.location, str):
             self.location = Location(province=self.location)
-        super().__post_init__()
 
     def __str__(self):
         unit = unit_dict[self.unit_type]
@@ -114,7 +113,6 @@ class CVY(_DAIDEObject):
     def __post_init__(self):
         if isinstance(self.province, str):
             self.province = Location(province=self.province)
-        super().__post_init__()
 
     def __str__(self):
         return f"using {self.convoying_unit} to convoy {self.convoyed_unit} into {self.province} "

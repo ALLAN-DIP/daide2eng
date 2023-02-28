@@ -11,7 +11,7 @@ from daidepp.keywords.press_keywords import *
 logger = logging.getLogger(__file__)
 logger.addHandler(logging.StreamHandler())
 
-__all__ = ["DAIDEVisitor", "daide_visitor"]
+__all__ = ["DAIDEVisitor"]
 
 _prov_no_coast = get_args(ProvinceNoCoast)
 

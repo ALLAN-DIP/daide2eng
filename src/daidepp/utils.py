@@ -1,5 +1,5 @@
 from daidepp import create_daide_grammar
-from daidepp.daide_visitor import DAIDEVisitor
+from daidepp import DAIDEVisitor
 from daidepp.keywords.keyword_utils import power_dict, power_list
 from typing import List
 import parsimonious, re
@@ -44,13 +44,11 @@ def gen_English(daide: str, self_power=None, send_power=None) -> str:
         grammar = create_daide_grammar(
             level=160, 
             allow_just_arrangement=True, 
-            string_type='all'
         )
         
         parse_tree = grammar.parse(daide)
         daide_visitor = DAIDEVisitor(self_power, send_power)
         output = str(daide_visitor.visit(parse_tree))
-
         return output
         
     except parsimonious.exceptions.ParseError:
