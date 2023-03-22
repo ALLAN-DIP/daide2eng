@@ -112,9 +112,6 @@ def is_daide(sentence: str) -> bool:
     PRESS_TOKENS = ['PRP', 'YES', 'REJ', 'BWX', 'HUH', 'CCL', 'FCT', 'TRY',
                     'INS', 'QRY', 'THK', 'IDK', 'WHT', 'HOW', 'EXP', 'SRY', 
                     'IFF', 'FRM', 'WHY', 'POB', 'UHY', 'HPY', 'ANG']
-    
-    if sentence[:3] in PRESS_TOKENS:
-        return True
 
     tokens = tokenize(pre_process(sentence))
 
@@ -122,4 +119,8 @@ def is_daide(sentence: str) -> bool:
         if not token.isupper() or len(token) != 3:
             return False
         
-    return True
+    if sentence[:3] in PRESS_TOKENS:
+        return True
+    return False
+
+print(is_daide('FCT XDO RUS sdawd BOT MTO SWE'))
