@@ -122,5 +122,3 @@ def is_daide(sentence: str) -> bool:
     if sentence[:3] in PRESS_TOKENS:
         return True
     return False
-
-print(is_daide('FCT XDO RUS sdawd BOT MTO SWE'))
