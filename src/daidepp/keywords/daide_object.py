@@ -9,7 +9,7 @@ from daidepp.grammar.grammar import DAIDELevel
 _grammar = create_daide_grammar(get_args(DAIDELevel)[-1], string_type="all")
 
 
-@dataclass
+@dataclass(eq=True, frozen=True)
 class _DAIDEObject(ABC):
     @abstractmethod
     def __str__(self) -> str:
