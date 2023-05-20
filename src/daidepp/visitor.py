@@ -220,7 +220,7 @@ class DAIDEVisitor(NodeVisitor):
         return XDO(order)
 
     def visit_and(self, node, visited_children) -> AND:
-        _, _, arrangement, _, par_arrangements = visited_children[0]
+        _, _, arrangement, _, par_arrangements = visited_children
 
         arrangements = [arrangement]
         for par_arr in par_arrangements:
@@ -229,7 +229,7 @@ class DAIDEVisitor(NodeVisitor):
         return AND(*arrangements)
 
     def visit_orr(self, node, visited_children) -> ORR:
-        _, _, arrangement, _, par_arrangements = visited_children[0]
+        _, _, arrangement, _, par_arrangements = visited_children
 
         arrangements = [arrangement]
         for par_arr in par_arrangements:
@@ -255,8 +255,8 @@ class DAIDEVisitor(NodeVisitor):
         _, scd_statements = visited_children
 
         power_and_supply_centers = []
-        for scd_statment in scd_statements:
-            _, power, _, supply_center, ws_supply_centers, _ = scd_statment
+        for scd_statement in scd_statements:
+            _, power, _, supply_center, ws_supply_centers, _ = scd_statement
 
             supply_centers = [Location(supply_center)]
             for ws_sc in ws_supply_centers:
