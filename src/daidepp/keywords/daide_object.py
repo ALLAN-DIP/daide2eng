@@ -14,3 +14,6 @@ class _DAIDEObject(ABC):
     @abstractmethod
     def __str__(self) -> str:
         pass
+
+    def __post_init__(self):
+        pass
