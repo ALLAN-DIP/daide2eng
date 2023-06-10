@@ -5,9 +5,9 @@ from typing import Optional, Tuple, Union
 
 from typing_extensions import get_args
 
-from daidepp.constants import *
-from daidepp.keywords.daide_object import _DAIDEObject
-from daidepp.keywords.keyword_utils import and_items, unit_dict
+from daide2eng.constants import *
+from daide2eng.keywords.daide_object import _DAIDEObject
+from daide2eng.keywords.keyword_utils import and_items, unit_dict
 
 _prov_no_coast = [prov for lit in get_args(ProvinceNoCoast) for prov in get_args(lit)]
 

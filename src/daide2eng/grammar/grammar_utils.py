@@ -5,8 +5,8 @@ from typing import Dict, List, Optional, Set, Tuple, Union
 from parsimonious.grammar import Grammar
 from typing_extensions import Literal
 
-from daidepp.constants import PressKeywords
-from daidepp.grammar.grammar import (
+from daide2eng.constants import PressKeywords
+from daide2eng.grammar.grammar import (
     LEVEL_0,
     LEVELS,
     TRAIL_TOKEN,

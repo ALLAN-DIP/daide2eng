@@ -31,7 +31,7 @@ power_dict = {
     "TUR": "TURKEY",
 }
 
-power_list = ["AUSTRIA", "ENGLAND", "FRANCE", "GERMANY", "ITALY", "RUSSIA", "TURKEY"]
+power_list = ["AUS", "ENG", "FRA", "GER", "ITA", "RUS", "TUR"]
 
 unit_dict = {
     "FLT": "fleet",

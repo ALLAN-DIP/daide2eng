@@ -1,12 +1,12 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Iterable, List
 
-from daidepp.constants import *
-from daidepp.keywords.base_keywords import *
-from daidepp.keywords.daide_object import _DAIDEObject
-from daidepp.keywords.keyword_utils import and_items, or_items
+from daide2eng.constants import *
+from daide2eng.keywords.base_keywords import *
+from daide2eng.keywords.daide_object import _DAIDEObject
+from daide2eng.keywords.keyword_utils import and_items, or_items
 
 @dataclass(eq=True, frozen=True)
 class PCE(_DAIDEObject):
@@ -86,7 +86,7 @@ class ALYVSS(_DAIDEObject):
 
     def __str__(self):
         return (
-            "an ally of "
+            "an alliance with "
             + and_items(self.aly_powers)
             + "against "
             + and_items(self.vss_powers)
@@ -139,26 +139,29 @@ class DRW(_DAIDEObject):
 
 @dataclass(eq=True, frozen=True)
 class YES(_DAIDEObject):
+    power: str
     press_message: PressMessage
 
     def __str__(self):
-        return f"accepting \"{self.press_message}\" "
+        return f"{self.power} accept {self.press_message} "
 
 
 @dataclass(eq=True, frozen=True)
 class REJ(_DAIDEObject):
+    power: str
     press_message: PressMessage
 
     def __str__(self):
-        return f"rejecting \"{self.press_message}\" "
+        return f"{self.power} reject {self.press_message} "
 
 
 @dataclass(eq=True, frozen=True)
 class BWX(_DAIDEObject):
+    power: str
     press_message: PressMessage
 
     def __str__(self):
-        return f"refusing to answer to \"{self.press_message}\" "
+        return f"{self.power} refuse to answer to {self.press_message} "
 
 
 @dataclass(eq=True, frozen=True)

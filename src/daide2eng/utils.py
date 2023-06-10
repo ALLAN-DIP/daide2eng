@@ -1,6 +1,6 @@
-from daidepp import create_daide_grammar
-from daidepp import DAIDEVisitor
-from daidepp.keywords.keyword_utils import power_dict, power_list
+from daide2eng import create_daide_grammar
+from daide2eng import DAIDEVisitor
+from daide2eng.keywords.keyword_utils import power_dict, power_list
 from typing import List
 import parsimonious, re
 
@@ -51,7 +51,9 @@ def gen_English(daide: str, self_power=None, send_power=None) -> str:
         return output
         
     except parsimonious.exceptions.ParseError:
-        return 'ERROR parsing ' + daide
+        return "ERROR parsing " + daide
+    except Exception as e:
+        return "Exception: " + str(e)
     
 def post_process(sentence: str, self_power=None, send_power=None) -> str:
     '''
@@ -59,7 +61,7 @@ def post_process(sentence: str, self_power=None, send_power=None) -> str:
     :param sentence: DAIDE string, e.g. '(ENG FLT LON) BLD'
     '''
 
-    if sentence.startswith('ERROR'):
+    if sentence.startswith('ERROR') or sentence.startswith('Exception'):
         return sentence
 
     # remove extra spaces
@@ -68,7 +70,16 @@ def post_process(sentence: str, self_power=None, send_power=None) -> str:
     if not output.endswith('.') or not output.endswith('?'):
         output += '.'
 
+    print(output)
 
+    if "reject" or "accept" in output:
+        pattern = re.compile(r'(\w+) propose')
+        match = pattern.search(output)
+        if match:
+            country = match.group(1)
+            output = re.sub(pattern, country + '\'s proposal of', output)
+
+    print(output)
     # first & second person possessive/substitution
     if (send_power in power_list):
         pattern = send_power + "'s"
@@ -78,12 +89,10 @@ def post_process(sentence: str, self_power=None, send_power=None) -> str:
     if (self_power in power_list):
         pattern = self_power + "'s"
         output = output.replace(pattern, 'my')
-        output = output.replace(self_power, 'I')
+        output = output.replace(self_power, 'me')
 
-    # TODO: Third singular s for verbs
-
-    # TODO: disambiguate 'ENG' as a power and a location
-
+    if output.startswith('me '):
+        output = 'I' + output[2:]
     return output
 
 # remove punctuations

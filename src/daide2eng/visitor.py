@@ -4,9 +4,9 @@ from typing import Any
 from parsimonious.nodes import Node, NodeVisitor
 from typing_extensions import get_args
 
-from daidepp.constants import ProvinceNoCoast
-from daidepp.keywords.base_keywords import *
-from daidepp.keywords.press_keywords import *
+from daide2eng.constants import ProvinceNoCoast
+from daide2eng.keywords.base_keywords import *
+from daide2eng.keywords.press_keywords import *
 
 logger = logging.getLogger(__file__)
 logger.addHandler(logging.StreamHandler())
@@ -114,15 +114,15 @@ class DAIDEVisitor(NodeVisitor):
 
     def visit_yes(self, node, visited_children) -> YES:
         _, _, press_message, _ = visited_children
-        return YES(press_message)
+        return YES(self.power, press_message)
 
     def visit_rej(self, node, visited_children) -> REJ:
         _, _, press_message, _ = visited_children
-        return REJ(press_message)
+        return REJ(self.power, press_message)
 
     def visit_bwx(self, node, visited_children) -> BWX:
         _, _, press_message, _ = visited_children
-        return BWX(press_message)
+        return BWX(self.power, press_message)
 
     def visit_huh(self, node, visited_children) -> HUH:
         _, _, press_message, _ = visited_children
