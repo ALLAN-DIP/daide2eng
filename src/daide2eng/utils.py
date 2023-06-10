@@ -70,16 +70,13 @@ def post_process(sentence: str, self_power=None, send_power=None) -> str:
     if not output.endswith('.') or not output.endswith('?'):
         output += '.'
 
-    print(output)
-
-    if "reject" or "accept" in output:
+    if "reject" in output or "accept" in output:
         pattern = re.compile(r'(\w+) propose')
         match = pattern.search(output)
         if match:
             country = match.group(1)
             output = re.sub(pattern, country + '\'s proposal of', output)
 
-    print(output)
     # first & second person possessive/substitution
     if (send_power in power_list):
         pattern = send_power + "'s"
