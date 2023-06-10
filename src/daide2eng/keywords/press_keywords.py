@@ -143,7 +143,7 @@ class YES(_DAIDEObject):
     press_message: PressMessage
 
     def __str__(self):
-        return f"{self.power} accept {self.press_message} "
+        return f"I accept {self.press_message} "
 
 
 @dataclass(eq=True, frozen=True)
@@ -152,7 +152,7 @@ class REJ(_DAIDEObject):
     press_message: PressMessage
 
     def __str__(self):
-        return f"{self.power} reject {self.press_message} "
+        return f"I reject {self.press_message} "
 
 
 @dataclass(eq=True, frozen=True)
@@ -161,7 +161,7 @@ class BWX(_DAIDEObject):
     press_message: PressMessage
 
     def __str__(self):
-        return f"{self.power} refuse to answer to {self.press_message} "
+        return f"I refuse to answer to {self.press_message} "
 
 
 @dataclass(eq=True, frozen=True)
