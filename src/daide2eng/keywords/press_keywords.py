@@ -30,7 +30,7 @@ class CCL(_DAIDEObject):
     press_message: PressMessage
 
     def __str__(self):
-        return f"canceling \"{self.press_message}\" "
+        return f"cancel \"{self.press_message}\" "
 
 
 @dataclass(eq=True, frozen=True)
@@ -47,7 +47,7 @@ class TRY(_DAIDEObject):
             raise ValueError("A TRY message must have at least 1 token.")
 
     def __str__(self):
-        return "trying the following tokens: " + " ".join(self.try_tokens) + " "
+        return "try the following tokens: " + " ".join(self.try_tokens) + " "
 
 
 @dataclass(eq=True, frozen=True)
@@ -55,16 +55,15 @@ class HUH(_DAIDEObject):
     press_message: PressMessage
 
     def __str__(self):
-        return f"not understanding \"{self.press_message}\" "
+        return f"not understand \"{self.press_message}\" "
 
 
 @dataclass(eq=True, frozen=True)
 class PRP(_DAIDEObject):
     arrangement: Arrangement
-    power: str
 
     def __str__(self):
-        return f"{self.power} propose {self.arrangement} "
+        return f"propose {self.arrangement} "
 
 
 @dataclass(eq=True, frozen=True)
@@ -139,29 +138,26 @@ class DRW(_DAIDEObject):
 
 @dataclass(eq=True, frozen=True)
 class YES(_DAIDEObject):
-    power: str
     press_message: PressMessage
 
     def __str__(self):
-        return f"I accept {self.press_message} "
+        return f"accept {self.press_message} "
 
 
 @dataclass(eq=True, frozen=True)
 class REJ(_DAIDEObject):
-    power: str
     press_message: PressMessage
 
     def __str__(self):
-        return f"I reject {self.press_message} "
+        return f"reject {self.press_message} "
 
 
 @dataclass(eq=True, frozen=True)
 class BWX(_DAIDEObject):
-    power: str
     press_message: PressMessage
 
     def __str__(self):
-        return f"I refuse to answer to {self.press_message} "
+        return f"refuse answering to {self.press_message} "
 
 
 @dataclass(eq=True, frozen=True)
@@ -169,7 +165,7 @@ class FCT(_DAIDEObject):
     arrangement_qry_not: Union[Arrangement, QRY, NOT]
 
     def __str__(self):
-        return f"I will do the following in the current round: \"{self.arrangement_qry_not}\" "
+        return f"doing the following in the current round: \"{self.arrangement_qry_not}\" "
 
 
 @dataclass(eq=True, frozen=True)
@@ -334,7 +330,7 @@ class SCD(_DAIDEObject):
 
     def __str__(self):
         pas_str = [str(pas) + " " for pas in self.power_and_supply_centers]
-        return f"arranging supply centre distribution as follows: " + and_items(pas_str)
+        return f"an arragement of supply centre distribution as follows: " + and_items(pas_str)
 
 
 @dataclass(eq=True, frozen=True)
@@ -384,10 +380,9 @@ class CHO(_DAIDEObject):
 @dataclass(eq=True, frozen=True)
 class INS(_DAIDEObject):
     arrangement: Arrangement
-    power: str
 
     def __str__(self):
-        return f"{self.power} insist {self.arrangement} "
+        return f"insist {self.arrangement} "
 
 
 @dataclass(eq=True, frozen=True)
@@ -401,28 +396,25 @@ class QRY(_DAIDEObject):
 @dataclass(eq=True, frozen=True)
 class THK(_DAIDEObject):
     arrangement_qry_not: Union[Arrangement, QRY, NOT, None]
-    power: str
 
     def __str__(self):
-        return f"{self.power} think {self.arrangement_qry_not} is true "
+        return f"think {self.arrangement_qry_not} is true "
 
 
 @dataclass(eq=True, frozen=True)
 class IDK(_DAIDEObject):
     qry_exp_wht_prp_ins_sug: Union[QRY, EXP, WHT, PRP, INS, SUG]
-    power: str
 
     def __str__(self):
-        return f"{self.power} don't know about {self.qry_exp_wht_prp_ins_sug} "
+        return f"don't know about {self.qry_exp_wht_prp_ins_sug} "
 
 
 @dataclass(eq=True, frozen=True)
 class SUG(_DAIDEObject):
     arrangement: Arrangement
-    power: str
 
     def __str__(self):
-        return f"{self.power} suggest {self.arrangement} "
+        return f"suggest {self.arrangement} "
 
 
 @dataclass(eq=True, frozen=True)
@@ -467,9 +459,9 @@ class FOR(_DAIDEObject):
 
     def __str__(self):
         if not self.end_turn:
-            return f"doing {self.arrangement} in {self.start_turn} "
+            return f"{self.arrangement} in {self.start_turn} "
         else:
-            return f"doing {self.arrangement} from {self.start_turn} to {self.end_turn} "
+            return f"{self.arrangement} from {self.start_turn} to {self.end_turn} "
 
 
 @dataclass(eq=True, frozen=True)
@@ -595,7 +587,7 @@ class POB(_DAIDEObject):
     why: WHY
 
     def __str__(self):
-        return f"answering {self.why} : the position on the board, or the previous moves, suggests/implies it "
+        return f"answer \"{self.why}\": the position on the board, or the previous moves, suggests/implies it "
 
 
 @dataclass(eq=True, frozen=True)
@@ -603,7 +595,7 @@ class UHY(_DAIDEObject):
     press_message: PressMessage
 
     def __str__(self):
-        return f"I'm unhappy that \"{self.press_message}\" "
+        return f"am unhappy that \"{self.press_message}\" "
 
 
 @dataclass(eq=True, frozen=True)
@@ -611,7 +603,7 @@ class HPY(_DAIDEObject):
     press_message: PressMessage
 
     def __str__(self):
-        return f"I'm  happy that \"{self.press_message}\" "
+        return f"am happy that \"{self.press_message}\" "
 
 
 @dataclass(eq=True, frozen=True)
@@ -619,7 +611,7 @@ class ANG(_DAIDEObject):
     press_message: PressMessage
 
     def __str__(self):
-        return f"I'm angry that \"{self.press_message}\" "
+        return f"am angry that \"{self.press_message}\" "
 
 
 @dataclass(eq=True, frozen=True)
@@ -634,7 +626,7 @@ class ULB(_DAIDEObject):
     float_val: float
 
     def __str__(self):
-        return f"utility lower bound of float for {self.power} is {self.float_val} "
+        return f"having a utility lower bound of float for {self.power} is {self.float_val} "
 
 
 @dataclass(eq=True, frozen=True)
@@ -643,7 +635,7 @@ class UUB(_DAIDEObject):
     float_val: float
 
     def __str__(self):
-        return f"utility upper bound of float for {self.power} is {self.float_val} "
+        return f"having a utility upper bound of float for {self.power} is {self.float_val} "
 
 
 Reply = Union[YES, REJ, BWX, HUH, FCT, THK, IDK, WHY, POB, UHY, HPY, ANG]

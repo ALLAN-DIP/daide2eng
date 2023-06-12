@@ -11,17 +11,15 @@ from daide2eng.keywords.press_keywords import *
 logger = logging.getLogger(__file__)
 logger.addHandler(logging.StreamHandler())
 
-__all__ = ["DAIDEVisitor"]
+__all__ = ["DAIDEVisitor", "daide_visitor"]
 
 _prov_no_coast = get_args(ProvinceNoCoast)
 
 
 class DAIDEVisitor(NodeVisitor):
-    def __init__(self, power, send_power) -> None:
+    def __init__(self) -> None:
         super().__init__()
-        
-        self.power = power if power and len(power) > 0 else "I"
-        self.send_power = send_power if send_power and len(send_power) > 0 else "You"
+
 
     def visit_message(self, node, visited_children) -> Message:
         return visited_children[0]
@@ -31,7 +29,7 @@ class DAIDEVisitor(NodeVisitor):
 
     def visit_prp(self, node, visited_children) -> PRP:
         _, _, arrangement, _ = visited_children
-        return PRP(arrangement, self.power)
+        return PRP(arrangement)
 
     def visit_ccl(self, node, visited_children) -> CCL:
         _, _, press_message, _ = visited_children
@@ -43,7 +41,7 @@ class DAIDEVisitor(NodeVisitor):
 
     def visit_thk(self, node, visited_children):
         _, _, arrangement_qry_not, _ = visited_children[0]
-        return THK(arrangement_qry_not, self.power)
+        return THK(arrangement_qry_not)
 
     def visit_try(self, node, visited_children) -> TRY:
         _, _, try_token, ws_try_tokens, _ = visited_children
@@ -56,7 +54,7 @@ class DAIDEVisitor(NodeVisitor):
 
     def visit_ins(self, node, visited_children) -> INS:
         _, _, arrangement, _ = visited_children
-        return INS(arrangement, self.power)
+        return INS(arrangement)
 
     def visit_qry(self, node, visited_children) -> QRY:
         _, _, arrangement, _ = visited_children
@@ -64,7 +62,7 @@ class DAIDEVisitor(NodeVisitor):
 
     def visit_sug(self, node, visited_children) -> SUG:
         _, _, arrangement, _ = visited_children
-        return SUG(arrangement, self.power)
+        return SUG(arrangement)
 
     def visit_wht(self, node, visited_children) -> WHT:
         _, _, unit, _ = visited_children
@@ -76,7 +74,7 @@ class DAIDEVisitor(NodeVisitor):
 
     def visit_exp(self, node, visited_children) -> EXP:
         _, _, turn, _, _, message, _ = visited_children
-        return EXP(turn, message, self.power)
+        return EXP(turn, message)
 
     def visit_iff(self, node, visited_children) -> IFF:
         _, _, arrangement, _, _, _, press_message, _, els = visited_children
@@ -114,15 +112,15 @@ class DAIDEVisitor(NodeVisitor):
 
     def visit_yes(self, node, visited_children) -> YES:
         _, _, press_message, _ = visited_children
-        return YES(self.power, press_message)
+        return YES(press_message)
 
     def visit_rej(self, node, visited_children) -> REJ:
         _, _, press_message, _ = visited_children
-        return REJ(self.power, press_message)
+        return REJ(press_message)
 
     def visit_bwx(self, node, visited_children) -> BWX:
         _, _, press_message, _ = visited_children
-        return BWX(self.power, press_message)
+        return BWX(press_message)
 
     def visit_huh(self, node, visited_children) -> HUH:
         _, _, press_message, _ = visited_children
@@ -134,7 +132,7 @@ class DAIDEVisitor(NodeVisitor):
     def visit_idk(self, node, visited_children) -> IDK:
         _, _, idk_param, _ = visited_children
 
-        return IDK(idk_param[0], self.power) if isinstance(idk_param, list) else IDK(idk_param, self.power)
+        return IDK(idk_param[0]) if isinstance(idk_param, list) else IDK(idk_param)
 
     def visit_sry(self, node, visited_children) -> SRY:
         _, _, exp, _ = visited_children
@@ -515,3 +513,5 @@ class DAIDEVisitor(NodeVisitor):
     def visit_uub(self, node, visited_children) -> UUB:
         _, _, power, utility, _ = visited_children
         return UUB(power, utility)
+
+daide_visitor = DAIDEVisitor()
