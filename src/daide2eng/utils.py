@@ -84,8 +84,11 @@ def post_process(sentence: str, sender: str, recipient: str, make_natural: bool)
         AGENT_OBJECTIVE = sender
         RECIPIENT_OBJECTIVE = recipient
 
+    output = sentence.replace("in <location>", "")
+    output = output.replace("<country>'s", "")
+
     # general steps that apply to all types of daide messages
-    output = AGENT_SUBJECTIVE + ' ' + sentence
+    output = AGENT_SUBJECTIVE + ' ' + output
 
     # remove extra spaces
     output = " ".join(output.split())

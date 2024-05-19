@@ -29,11 +29,13 @@ power_dict = {
     "ITA": "ITALY",
     "RUS": "RUSSIA",
     "TUR": "TURKEY",
+    "<country>": "a country",
 }
 
-power_list = ["AUS", "ENG", "FRA", "GER", "ITA", "RUS", "TUR"]
+power_list = ["AUS", "ENG", "FRA", "GER", "ITA", "RUS", "TUR", "<country>"]
 
 unit_dict = {
     "FLT": "fleet",
     "AMY": "army",
+    "<unit_type>": "unit",
 }    
