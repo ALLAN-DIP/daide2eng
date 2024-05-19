@@ -15,7 +15,7 @@ DAIDELevel = Literal[
 TRAIL_TOKEN = "---"  # any value starting with '---' is meant to be a continuation of that key, not a replacement
 
 LEVEL_0: GrammarDict = {
-    "power": '"AUS" / "ENG" / "FRA" / "GER" / "ITA" / "RUS" / "TUR"',
+    "power": '"AUS" / "ENG" / "FRA" / "GER" / "ITA" / "RUS" / "TUR" / "<country>"',
     "order": "hld / mto / sup / cvy / move_by_cvy / retreat / build",
     "hld": 'lpar unit rpar "HLD"',
     "mto": 'lpar unit rpar "MTO" ws province',
@@ -29,13 +29,13 @@ LEVEL_0: GrammarDict = {
     "bld": 'lpar unit rpar "BLD"',
     "rem": 'lpar unit rpar "REM"',
     "wve": 'power ws "WVE"',
-    "unit_type": '"AMY" / "FLT"',
+    "unit_type": '"AMY" / "FLT" / "<unit_type>"',
     "unit": "power ws unit_type ws province",
     "prov_no_coast": "prov_land_sea / prov_landlock / prov_sea",
     "prov_coast": '(lpar "STP" ws "NCS" rpar) / (lpar "STP" ws "SCS" rpar) / (lpar "SPA" ws "NCS" rpar) / (lpar "SPA" ws "SCS" rpar) / (lpar "BUL" ws "ECS" rpar) / (lpar "BUL" ws "SCS" rpar)',
     "province": "prov_coast / prov_land_sea / prov_landlock / prov_sea",
     "coast": '"NCS" / "ECS" / "SCS" / "WCS"',
-    "prov_land_sea": '"ALB" / "ANK" / "APU" / "ARM" / "BEL" / "BER" / "BRE" / "BUL" / "CLY" / "CON" / "DEN" / "EDI" / "FIN" / "GAS" / "GRE" / "HOL" / "KIE" / "LON" / "LVN" / "LVP" / "MAR" / "NAF" / "NAP" / "NWY" / "PIC" / "PIE" / "POR" / "PRU" / "ROM" / "RUM" / "SEV" / "SMY" / "SPA" / "STP" / "SWE" / "SYR" / "TRI" / "TUN" / "TUS" / "VEN" / "YOR" / "WAL"',
+    "prov_land_sea": '"ALB" / "ANK" / "APU" / "ARM" / "BEL" / "BER" / "BRE" / "BUL" / "CLY" / "CON" / "DEN" / "EDI" / "FIN" / "GAS" / "GRE" / "HOL" / "KIE" / "LON" / "LVN" / "LVP" / "MAR" / "NAF" / "NAP" / "NWY" / "PIC" / "PIE" / "POR" / "PRU" / "ROM" / "RUM" / "SEV" / "SMY" / "SPA" / "STP" / "SWE" / "SYR" / "TRI" / "TUN" / "TUS" / "VEN" / "YOR" / "WAL" / "<location>"',
     "prov_landlock": '"BOH" / "BUD" / "BUR" / "MOS" / "MUN" / "GAL" / "PAR" / "RUH" / "SER" / "SIL" / "TYR" / "UKR" / "VIE" / "WAR" ',
     "prov_sea": '"ADR" / "AEG" / "BAL" / "BAR" / "BLA" / "GOB" / "EAS" / "ECH" / "HEL" / "ION" / "IRI" / "LYO" / "MAO" / "NAO" / "NTH" / "NWG" / "SKA" / "TYS" / "WES" / "ENG" ',
     "supply_center": '"ANK" / "BEL" / "BER" / "BRE" / "BUD" / "BUL" / "CON" / "DEN" / "EDI" / "GRE" / "HOL" / "KIE" / "LON" / "LVP" / "MAR" / "MOS" / "MUN" / "NAP" / "NWY" / "PAR" / "POR" / "ROM" / "RUM" / "SER" / "SEV" / "SMY" / "SPA" / "STP" / "SWE" / "TRI" / "TUN" / "VEN" / "VIE" / "WAR"',

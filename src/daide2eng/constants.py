@@ -1,7 +1,7 @@
 from typing_extensions import Literal
 
-Power = Literal["AUS", "ENG", "FRA", "GER", "ITA", "RUS", "TUR"]
-UnitType = Literal["AMY", "FLT"]
+Power = Literal["AUS", "ENG", "FRA", "GER", "ITA", "RUS", "TUR", "<country>"]
+UnitType = Literal["AMY", "FLT", "<unit_type>"]
 
 ProvinceLandSea = Literal[
     "ALB",
@@ -46,6 +46,7 @@ ProvinceLandSea = Literal[
     "VEN",
     "YOR",
     "WAL",
+    "<location>",
 ]
 ProvinceLandlock = Literal[
     "BOH",
@@ -174,6 +175,7 @@ SupplyCenter = Literal[
     "VEN",
     "VIE",
     "WAR",
+    "<location>",
 ]
 
 PressKeywords = Literal[
