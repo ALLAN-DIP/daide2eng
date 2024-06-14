@@ -161,7 +161,20 @@ class DAIDEVisitor(NodeVisitor):
             powers.append(pow)
         return PCE(*powers)
 
-    def visit_aly_vss(self, node, visited_children) -> ALYVSS:
+
+    def visit_aly_vss(self, node, visited_children) -> AlyTypes:
+        return visited_children[0]
+
+    def visit_aly_no_vss(self, node, visited_children) -> ALYONLY:
+        _, _, power, ws_powers, _ = visited_children
+
+        powers = [power]
+        for ws_pow in ws_powers:
+            _, pow = ws_pow
+            powers.append(pow)
+        return ALYONLY(*powers)
+
+    def visit_aly_with_vss(self, node, visited_children) -> ALYVSS:
         (
             aly,
             _,

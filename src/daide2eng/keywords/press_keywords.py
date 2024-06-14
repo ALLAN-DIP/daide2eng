@@ -67,6 +67,22 @@ class PRP(_DAIDEObject):
 
 
 @dataclass(eq=True, frozen=True)
+class ALYONLY(_DAIDEObject):
+    powers: Tuple[Power]
+
+    def __init__(self, *powers: Power):
+        object.__setattr__(self, "powers", tuple(sorted(set(powers))))
+        self.__post_init__()
+
+    def __post_init__(self):
+        super().__post_init__()
+        if len(self.powers) < 2:
+            raise ValueError("An alliance must have at least 2 allies.")
+
+    def __str__(self):
+        return "an alliance of " + and_items(self.powers)
+
+@dataclass(eq=True, frozen=True)
 class ALYVSS(_DAIDEObject):
     aly_powers: Tuple[Power]
     vss_powers: Tuple[Power]
@@ -84,12 +100,16 @@ class ALYVSS(_DAIDEObject):
             raise ValueError("An alliance must have at least 1 enemy.")
 
     def __str__(self):
-        return (
-            "an alliance with "
-            + and_items(self.aly_powers)
-            + "against "
-            + and_items(self.vss_powers)
-        )
+        if not any(pp in self.aly_powers for pp in self.vss_powers):
+            # if there is VSS power and no overlap between the allies and the enemies
+            return (
+                "an alliance with "
+                + and_items(self.aly_powers)
+                + "against "
+                + and_items(self.vss_powers)
+            )
+        else:
+            return "an alliance of " + and_items(self.aly_powers)
 
 
 @dataclass(eq=True, frozen=True)
@@ -654,6 +674,9 @@ PressMessage = Union[
     EXP,
     IFF,
 ]
+
+AlyTypes = Union[ALYONLY, ALYVSS]
+
 Message = Union[PressMessage, Reply]
 Arrangement = Union[
     PCE,
