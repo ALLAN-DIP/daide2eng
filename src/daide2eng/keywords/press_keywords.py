@@ -165,7 +165,7 @@ class FCT(_DAIDEObject):
     arrangement_qry_not: Union[Arrangement, QRY, NOT]
 
     def __str__(self):
-        return f"doing the following in the current round: \"{self.arrangement_qry_not}\" "
+        return f"expect the following: \"{self.arrangement_qry_not}\" "
 
 
 @dataclass(eq=True, frozen=True)
