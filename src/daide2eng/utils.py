@@ -109,7 +109,10 @@ def post_process(sentence: str, sender: str, recipient: str, make_natural: bool)
         output = output.replace(
             'propose', RECIPIENT_POSSESSIVE + ' proposal of', 1)
 
-
+    # make natural for proposals
+    detect_str = f"I propose an order using {sender}'s"
+    if sender != "I" and make_natural and detect_str in output:
+        output = output.replace(detect_str, f"I will move")
 
     return output
 
