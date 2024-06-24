@@ -113,7 +113,9 @@ def post_process(sentence: str, sender: str, recipient: str, make_natural: bool)
     detect_str = f"I propose an order using {sender}'s"
     if sender != "I" and make_natural and detect_str in output:
         output = output.replace(detect_str, f"I will move")
-
+    elif sender in power_list and make_natural:
+        output = output.replace('I propose an order using', 'I think')
+        output = output.replace(' to ', ' is going to ')
     return output
 
 
